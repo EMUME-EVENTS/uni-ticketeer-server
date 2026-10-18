@@ -1,0 +1,8 @@
+{
+    "fullname": "Superadmin",
+    "email": "davidsirct@gmail.com",
+    "admintype": "superadmin",
+    "roles": ["create", "read", "edit", "delete"],
+    "password": "$2a$12$gqDax/nltcEsaDk4m/cFHeBX3nLmXiOCdMxAhrQMfMn5AWnKS5qDq",
+    "status": "active"
+}

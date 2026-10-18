@@ -1,0 +1,334 @@
+@currenttoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTc5OTdkY2VhZjU3MDc1ZGU0OWYxNDMiLCJlbWFpbCI6Im9ud2VudV9ib3I4dUBtYWlsc2FjLmNvbSIsInJvbGUiOiJiYXNpYyIsImlhdCI6MTc4NzE0MjIzNywiZXhwIjoxNzg3MjI4NjM3fQ.pflZoYh3QvbtuY1Lg9y7oJQpTGgzAGm-uG2sRZ0r7zw
+@currentorganisertoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTBhMGUzNzljMWM1NTE3Y2Q5ODhlNGQiLCJlbWFpbCI6Im9ud2VudW1vbmV5QGdtYWlsLmNvbSIsInJvbGUiOiJvcmdhbmlzZXIiLCJpYXQiOjE3ODcwNTUyOTQsImV4cCI6MTc4NzE0MTY5NH0.3dAfCAWCyG_nLDNOiBgOAEOR4vp9WYNMpjisYj_Yi80
+@baseurl = http://localhost:5000/api/v1
+
+
+GET  http://localhost:5000/
+###
+POST {{baseurl}}/users/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "firstname": "onwenu",
+    "lastname": "money",
+    "username": "Southside Entertainment",
+    "email": "onwenumoney@gmail.com",
+    "password": "password",
+    "confirm_password": "password",
+    "gender": "male",
+    "usertype": "organiser",
+    "tac": true,
+    "location": "Anambra"
+}
+
+###sigup basic user
+POST {{baseurl}}/users/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "onyekaogbu",
+  "email": "onwenu_bor8u@mailsac.com",
+  "password": "COMICman",
+  "confirm_password": "COMICman",
+  "usertype": "basic",
+  "tac": true,
+  "location": "Nigeria"
+}
+### verify email token
+GET {{baseurl}}/users/verifymail/6a7997dceaf57075de49f143/dc7e6fd096551744ed4d6759723667f03bcc846f79eeead8c41334d9a7765c06
+
+### generate email verification token
+POST {{baseurl}}/users/generate/verificationtoken
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "onwenu_bor8u@mailsac.com"
+}
+
+### forgot password link
+GET {{baseurl}}/users/forgot-password?email=onwenu_bor8u@mailsac.com
+
+### reset password
+POST {{baseurl}}/users/reset-password?userid=68bacfa3e8297c0878897b3e&token=7e7db0d22d15b634b21152bfd33ed62ce25ec5908eb38aace9d6beeb4988d5ad
+Content-Type: application/json
+Accept: application/json
+
+{
+  "new_password": "Abcd1234@"
+}
+
+### login organiser
+POST {{baseurl}}/users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "onwenumoney@gmail.com",
+    "password": "COMICman"
+}
+
+### login normal user
+POST {{baseurl}}/users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "onwenu_bor8u@mailsac.com",
+  "password": "COMICman"
+}
+
+
+###
+GET {{baseurl}}/users/profile
+Accept: application/json
+Content-Type: multipart/form-data
+ticketeer-auth-token: {{currenttoken}}
+
+###
+GET {{baseurl}}/users/organiserstats
+Accept: application/json
+Content-Type: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+###
+POST {{baseurl}}/events
+Accept: application/json
+Content-Type: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+{
+    "title": "name of event",
+    "venue": "event venue",
+    "date": "2022-12-12",
+    "start_time": "12pm",
+    "category": ["party", "concert"],
+    "organiser": "nameoforganiser",
+    "location": {"country": "Nigeria", "state": "Anambra"},
+    "banner_image_url": "C:\\Users\\onyeka david\\Documents\\cts progs\\company-coporate-code\\uni-ticketeer\\uni-ticketeer-server\\images\\1685519604347105947.jpg",
+    "is_ticketed": true
+}
+
+###
+GET {{baseurl}}/events
+
+###
+PUT {{baseurl}}/events/edit/648d856c7b1018f735ba6843
+Content-Type: application/json
+Accept: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+ {
+      "title": "name of event change2",
+      "venue": "change of venue",
+      "date": "2022-12-30",
+      "start_time": "12am",
+      "category": [
+        "party",
+        "concert"
+      ],
+      "organiser": "nameoforganiser",
+      "location": {
+        "country": "Nigeria",
+        "state": "Anambra"
+      },
+      "banner_image_url": "C:\\Users\\onyeka david\\Documents\\cts progs\\company-coporate-code\\uni-ticketeer\\uni-ticketeer-server\\images\\1685519604347105947.jpg",
+      "is_ticketed": true,
+      "views": 0
+    }
+
+###
+POST {{baseurl}}/tickets/add
+Content-Type: application/json
+Accept: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+{
+   "event_id": "648ddfe5beb446be5e5756ca",
+   "ticket_type": "vip",
+   "ticket_price": 2000,
+   "event_name": "name of event change2",
+   "ticket_banner_url": "C:\\Users\\onyeka david\\Documents\\cts progs\\company-coporate-code\\uni-ticketeer\\uni-ticketeer-server\\images\\1685519604347105947.jpg",
+   "ticket_quantity": 10,
+   "restrictions": {}
+}
+
+### get tickets by event id
+GET {{baseurl}}/tickets/events/690b0a3a9c1c5517cd988f59
+
+### get single ticket
+GET {{baseurl}}/tickets/690b0a679c1c5517cd988f65
+Content-Type: application/json
+Accept: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+### edit ticket
+PUT {{baseurl}}/tickets/690b0a679c1c5517cd988f65
+Content-Type: application/json
+Accept: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+{
+  "event_id": "690b0a3a9c1c5517cd988f59",
+  "ticket_price": 2500
+}
+
+###
+GET {{baseurl}}/tickets/purchased/user
+Accept: application/json
+Content-Type: multipart/form-data
+ticketeer-auth-token: {{currenttoken}}
+
+###
+POST {{baseurl}}/tickets/generate/690b0b1b9c1c5517cd988f7e
+Accept: application/json
+Content-Type: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+{
+  "quantity": 1
+}
+
+###
+POST {{baseurl}}/cart/checkout
+Accept: application/json
+Content-Type: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+  {
+  "callback_url": "http://localhost:5173/verifypayment"
+  }
+
+###
+GET {{baseurl}}/verifypayment?trxref=onyekaogbu_checkout_tx_1786933672638&reference=onyekaogbu_checkout_tx_1786933672638
+
+###
+GET {{baseurl}}/cart/6a7997dceaf57075de49f143
+ticketeer-auth-token: {{currenttoken}}
+
+###
+DELETE {{baseurl}}/cart/delete_item/6488d81e01d9ee0e3c9a305e
+ticketeer-auth-token: {{currenttoken}}
+
+###
+GET {{baseurl}}/users/accountdetails
+ticketeer-auth-token: {{currenttoken}}
+
+###
+POST {{baseurl}}/users/accountdetails
+Content-Type: application/json
+Accept: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+{
+  "user_id": "690a0e379c1c5517cd988e4d",
+  "bank_code": "999992",
+  "account_number": "7033062973",
+  "bank_name": "opay"
+}
+
+###
+PUT {{baseurl}}/users/accountdetails
+Content-Type: application/json
+Accept: application/json
+ticketeer-auth-token: {{currenttoken}}
+
+{
+  "account_number": "0690000041"
+}
+
+###
+POST {{baseurl}}/users/withdraw
+Content-Type: application/json
+Accept: application/json
+ticketeer-auth-token: {{currentorganisertoken}}
+
+{
+  "amount": 50000
+}
+
+###
+POST {{baseurl}}/webhooks/paystack
+Content-Type: application/json
+Accept: application/json
+
+{
+  "event": "transfer.success",
+  "data": {
+    "amount": 5000000,
+    "createdAt": "2026-08-18T12:18:02.000Z",
+    "currency": "NGN",
+    "domain": "test",
+    "failures": null,
+    "id": 1021122811,
+    "integration": {
+      "id": 1014690,
+      "is_live": false,
+      "business_name": "UNIQUE CYBER GEMS",
+      "logo_path": "https://public-files-paystack-prod.s3.eu-west-1.amazonaws.com/integration-logos/paystack.jpg"
+    },
+    "reason": "Withdrawal transaction",
+    "reference": "Southside_Entertainment_withdrawal_tx_1787055481231",
+    "source": "balance",
+    "source_details": null,
+    "status": "success",
+    "titan_code": null,
+    "transfer_code": "TRF_ledefgwx5rpt38oa",
+    "transferred_at": null,
+    "updatedAt": "2026-08-18T12:18:02.000Z",
+    "recipient": {
+      "active": true,
+      "createdAt": "2026-08-03T12:26:01.000Z",
+      "currency": "NGN",
+      "description": null,
+      "domain": "test",
+      "email": null,
+      "id": 131229742,
+      "integration": 1014690,
+      "metadata": null,
+      "name": "Onyeka Ogbusuo",
+      "recipient_code": "RCP_jbsdenxhcczvnx1",
+      "type": "nuban",
+      "updatedAt": "2026-08-03T12:26:01.000Z",
+      "is_deleted": false,
+      "details": {
+        "authorization_code": null,
+        "account_number": "7033062973",
+        "account_name": "ONYEKA DAVID OGBUSUO",
+        "bank_code": "999992",
+        "bank_name": "OPay Digital Services Limited (OPay)"
+      }
+    },
+    "session": {
+      "provider": null,
+      "id": null
+    },
+    "fee_charged": 0,
+    "gateway_response": null
+  }
+}
+
+###
+POST {{baseurl}}/waiting-list
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "mail@email.com"
+}
+
+###
+GET {{baseurl}}/paystack-banklist
+
+
+###
+POST {{baseurl}}/admin/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "davidsirct@gmail.com",
+  "password": "superadmin"
+}

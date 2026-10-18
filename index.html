@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+       <form action="/uploadimage" method="post" id="form">
+        <input id="img" type="file" />
+        <input type="submit" />
+       </form>
+        <div id="show">
+            
+        </div>
+    </div>
+
+    <div>
+        <h2>cart test section</h2>
+
+        <button id="cart-btn"> cart </button>
+    </div>
+
+    <script>
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDhkYmRhOGUzZDBlYjUzNDc1ODJkY2EiLCJlbWFpbCI6ImVtYWlsQGVtYWlsLmNvbSIsImlhdCI6MTY4ODcxMjI0NywiZXhwIjoxNjg4NzE1ODQ3fQ.RlVWHReqrrKt6_Xum0aCRhnxqSlKjqV2LsWZWc6WXMo"
+        let form = document.getElementById('form')
+        let file = document.getElementById('img')
+        let show = document.getElementById('show')
+
+        let cart
+        let cartbtn = document.getElementById('cart-btn')
+
+
+
+        cartbtn.addEventListener('click', ()=>{
+            fetch('/cart/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'ticketeer-auth-token': token
+                },
+                body: JSON.stringify({cart_items: cart})
+            }).then((res)=> res.json()).then((data)=>{
+                console.log(data)
+                if(typeof data.data == 'string'){
+                    window.location.assign(data.data)
+                }   
+                    
+            }).catch((err)=>{
+                console.log(err)
+            })
+        })
+
+        form.addEventListener('submit', (e)=>{
+            e.preventDefault()
+
+            let formdata = new FormData()
+
+            formdata.append('img', file.files[0])
+
+            fetch('/uploadimage', {
+                method: 'post',
+                body: formdata
+            }).then((res)=> res.json()).then((data)=>{
+                console.log(data)
+                show.innerHTML = data.data.url
+            }).catch((err)=>{
+                console.log(err)
+            })
+        })
+
+        function getCart(){
+            fetch('/cart/648dbda8e3d0eb5347582dca', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'ticketeer-auth-token': token
+                }
+            }).then((res)=> res.json()).then((data)=>{
+                console.log(data)
+                cart = data.data
+                cartbtn.innerHTML += data.data?.length
+            }).catch((err)=>{
+                console.log(err)
+            })
+        }
+
+        getCart()
+    </script>
+</body>
+</html>
