@@ -135,6 +135,8 @@ function editEventValidation(req, res, next) {
         location: Joi.object({
             country: Joi.string().required(),
             state: Joi.string().required(),
+            isPrivate: Joi.boolean(),
+            onlineLink: Joi.string(),
             city: Joi.string().required(),
             landmark: Joi.string()
         }),
